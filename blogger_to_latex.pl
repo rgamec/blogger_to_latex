@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Script to generate a valid .tex file from a Blogspot XML backup
+# Script to generate a valid .tex file from a Blogger XML backup
 use strict;
 use POSIX ();
 
@@ -88,6 +88,23 @@ while ($document =~ m|<entry><id>tag:blogger.com,1999:blog-\d*.post-\d*</id>(.*?
 
 		# Handle special characters like % and ^ and # and @ and { and }
 		$post_content =~ s|&amp;#233;|é|gs;
+		$post_content =~ s|&amp;#39;|'|gs;
+		$post_content =~ s|Âµ|\\textmu{}|gs;
+		$post_content =~ s|ð|\\dh|gs;
+    
+		# Handle French & German accents
+		$post_content =~ s|ä|\\"{a}|gs;
+		$post_content =~ s|ü|\\"{u}|gs;
+		$post_content =~ s|ö|\\"{o}|gs;
+		$post_content =~ s|é|\\'{e}|gs;
+		$post_content =~ s|à|\\`{a}|gs;
+		$post_content =~ s|ù|\\`{u}|gs;
+		$post_content =~ s|è|\\`{e}|gs;
+		$post_content =~ s|ç|\\c{c}|gs;
+		$post_content =~ s|Ç|\\c{C}|gs;
+
+		# Supporting currency symbol transforms
+		$post_content =~ s|£|\\pounds|gs;
 
 		$post_content =~ s|#|\\#|gs;
 		$post_content =~ s|\$|\\\$|gs;
